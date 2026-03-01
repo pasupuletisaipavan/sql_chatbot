@@ -10,3 +10,4 @@ sqlalchemy
 requests
 sqlglot
 ipykernel
+psycopg2-binary

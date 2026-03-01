@@ -42,21 +42,21 @@ class SQLAgent:
         while attempts < 3:
             valid, err = validate(sql)
             if valid:
-                verification = verify_sql_with_llm(schema, question, sql)
-                print("Verification prompt:", verification)
-                if "YES" in verification.upper():
-                    db_path = os.getenv("DB_PATH")
-                    columns, rows = execute_sql_query(db_path, sql)
-                    return {
-                        "sql_query": sql,
-                        "sql_results": (columns, rows)
-                    }
-                else:
-                    print("LLM flagged SQL as incorrect. Reason:", verification)
-                    repair_sql = generate(
-                        repair_prompt(schema, sql, err), schema
-                    )
-                    sql = repair_sql
+                # verification = verify_sql_with_llm(schema, question, sql)
+                # print("Verification prompt:", verification)
+                # if "YES" in verification.upper():
+                db_path = os.getenv("DB_URL")
+                columns, rows = execute_sql_query(db_path, sql)
+                return {
+                    "sql_query": sql,
+                    "sql_results": (columns, rows)
+                }
+                # else:
+                #     print("LLM flagged SQL as incorrect")
+                #     repair_sql = generate(
+                #         repair_prompt(schema, sql, err), schema
+                #     )
+                #     sql = repair_sql
             else:
                 repair_sql = generate(
                     repair_prompt(schema, sql, err), schema
